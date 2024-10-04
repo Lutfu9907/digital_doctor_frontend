@@ -34,3 +34,4 @@ npm run build
 npm run lint
 ```
 "# Bitirme_Projesi_1" 
+"# Bitirme_Projesi_1" 
