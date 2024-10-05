@@ -79,15 +79,21 @@
           </div>
 
           <div class="flex-c-m">
-            <a href="#" class="login100-social-item bg3">
-              <i class="fa fa-google"></i>
+            <a
+              href="#"
+              class="btn btn-danger btn-lg btn-block"
+              @click="handleGoogle('/google-auth')"
+            >
+              Google ile Kayıt Ol
             </a>
           </div>
 
           <div class="flex-col-c p-t-70">
             <span class="txt1 p-b-17"> Ya da şununla Kayıt Ol </span>
 
-            <a href="#" class="txt2" @click="handleSignUp('signUp')"> Kayıt Ol </a>
+            <a href="#" class="btn btn-dark btn-lg rounded" @click="handleSignUp('signUp')"
+              >Kayıt Ol</a
+            >
           </div>
         </form>
       </div>
@@ -103,15 +109,20 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const handleLogin = () => {
+  localStorage.setItem('authToken', 1234)
   router.push('/home')
 }
 
 const handleSignUp = () => {
-  router.push('/signUp')
+  router.push('/sign-up')
 }
 
 const handlePassword = () => {
-  router.push('/forgotPassword')
+  router.push('/forgot-password')
+}
+
+const handleGoogle = () => {
+  window.location.href = '/google-auth'
 }
 </script>
 

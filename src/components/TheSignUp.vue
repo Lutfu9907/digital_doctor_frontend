@@ -77,8 +77,12 @@
           </div>
 
           <div class="flex-c-m">
-            <a href="#" class="login100-social-item bg3">
-              <i class="fa fa-google"></i>
+            <a
+              href="#"
+              class="btn btn-danger btn-lg btn-block"
+              @click="handleGoogle('/google-auth')"
+            >
+              Google ile Kayıt Ol
             </a>
           </div>
         </form>
@@ -96,6 +100,10 @@ const router = useRouter()
 
 const pushUp = () => {
   router.push('/home')
+}
+
+const handleGoogle = () => {
+  window.location.href = '/google-auth'
 }
 </script>
 

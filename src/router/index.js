@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
-import HomeView from '../views/HomeView.vue'
-import SignUpView from '@/views/SignUpView.vue'
+import LoginPage from '../views/LoginPage.vue'
+import HomePage from '../views/HomePage.vue'
+import SignUp from '@/views/SignUp.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
+
+const isAuthenticated = () => {
+  return !!localStorage.getItem('authToken')
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,24 +14,32 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: LoginPage
     },
     {
-      path: '/forgotPassword',
-      name: 'forgotPassword',
+      path: '/forgot-password',
+      name: 'forgot-password',
       component: ForgotPassword
     },
     {
-      path: '/signUp',
-      name: 'signUp',
-      component: SignUpView
+      path: '/sign-up',
+      name: 'sign-up',
+      component: SignUp
     },
     {
       path: '/home',
       name: 'home',
-      component: HomeView
+      component: HomePage
     }
   ]
+})
+
+router.beforeEach((to, _, next) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })
 
 export default router
