@@ -91,9 +91,7 @@
           <div class="flex-col-c p-t-70">
             <span class="txt1 p-b-17"> Ya da şununla Kayıt Ol </span>
 
-            <a href="#" class="btn btn-dark btn-lg rounded" @click="handleSignUp('signUp')"
-              >Kayıt Ol</a
-            >
+            <a href="#" class="btn btn-dark btn-lg rounded" @click="pushUp('signUp')">Kayıt Ol</a>
           </div>
         </form>
       </div>
@@ -104,16 +102,35 @@
 </template>
 
 <script setup>
+import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const handleLogin = () => {
-  localStorage.setItem('authToken', 1234)
-  router.push('/home')
+const handleLogin = async () => {
+  const email = document.querySelector('input[name="email"]').value
+  const password = document.querySelector('input[name="pass"]').value
+
+  try {
+    const response = await axios.post('http://localhost:3000/auth/login', {
+      email: email,
+      password: password
+    })
+
+    localStorage.setItem('authToken', response.data.token)
+    router.push('/home')
+  } catch (error) {
+    console.error('Login failed', error)
+    alert('Giriş başarısız!')
+  }
 }
 
-const handleSignUp = () => {
+// const handleLogin = () => {
+//   localStorage.setItem('authToken', 1234)
+//   router.push('/home')
+// }
+
+const pushUp = () => {
   router.push('/sign-up')
 }
 

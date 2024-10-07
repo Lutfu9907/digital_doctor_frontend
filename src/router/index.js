@@ -42,4 +42,12 @@ router.beforeEach((to, _, next) => {
   }
 })
 
+router.beforeEach((to, _, next) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next({ name: 'sign-up' })
+  } else {
+    next()
+  }
+})
+
 export default router

@@ -6,6 +6,7 @@
       <RouterLink to="/home"></RouterLink>
       <RouterLink to="/forgot-password"></RouterLink>
       <HomePage v-if="isLoggedIn" @loginSuccess="handleLogin" />
+      <HomePage v-if="isSignUpIn" @signUpSuccess="handleSignUp" />
     </nav>
   </header>
 
@@ -13,8 +14,20 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import HomePage from './views/HomePage.vue'
+
+const isLoggedIn = ref(false)
+const isSignUpIn = ref(false)
+
+const handleLogin = () => {
+  isLoggedIn.value = true
+}
+
+const handleSignUp = () => {
+  isSignUpIn.value = true
+}
 </script>
 
 <style scoped></style>

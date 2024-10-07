@@ -68,7 +68,7 @@
           <div class="container-login100-form-btn">
             <div class="wrap-login100-form-btn">
               <div class="login100-form-bgbtn"></div>
-              <button class="login100-form-btn" @click="pushUp('home')">Kayıt Ol</button>
+              <button class="login100-form-btn" @click="handleSignUp('home')">Kayıt Ol</button>
             </div>
           </div>
 
@@ -77,13 +77,7 @@
           </div>
 
           <div class="flex-c-m">
-            <a
-              href="#"
-              class="btn btn-danger btn-lg btn-block"
-              @click="handleGoogle('/google-auth')"
-            >
-              Google ile Kayıt Ol
-            </a>
+            <a href="#" class="btn btn-danger btn-lg btn-block"> Google ile Kayıt Ol </a>
           </div>
         </form>
       </div>
@@ -94,16 +88,28 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
-const pushUp = () => {
-  router.push('/home')
-}
+const email = ref('')
+const password = ref('')
 
-const handleGoogle = () => {
-  window.location.href = '/google-auth'
+const handleSignUp = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/auth/register', {
+      email: email.value,
+      password: password.value
+    })
+
+    alert(response.data.message)
+    router.push('/home')
+  } catch (error) {
+    console.error('Kayıt başarısız:', error)
+    alert('Kayıt başarısız! Lütfen tekrar deneyin.')
+  }
 }
 </script>
 
