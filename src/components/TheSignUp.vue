@@ -49,6 +49,7 @@
             <input
               class="input100"
               type="email"
+              v-model="email"
               name="email"
               placeholder="Email adresinizi yazın"
               pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -59,7 +60,13 @@
 
           <div class="wrap-input100 validate-input" data-validate="Password is required">
             <span class="label-input100">Şifre</span>
-            <input class="input100" type="password" name="pass" placeholder="Şifrenizi yazın" />
+            <input
+              class="input100"
+              type="password"
+              v-model="password"
+              name="pass"
+              placeholder="Şifrenizi yazın"
+            />
             <span class="focus-input100" data-symbol="&#xf190;"></span>
           </div>
 
@@ -68,7 +75,9 @@
           <div class="container-login100-form-btn">
             <div class="wrap-login100-form-btn">
               <div class="login100-form-bgbtn"></div>
-              <button class="login100-form-btn" @click="handleSignUp('home')">Kayıt Ol</button>
+              <button class="login100-form-btn" @click.prevent="handleSignUp('home')">
+                Kayıt Ol
+              </button>
             </div>
           </div>
 
