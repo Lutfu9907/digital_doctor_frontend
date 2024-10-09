@@ -1,6 +1,6 @@
 <template>
   <head>
-    <title>Giriş Yap</title>
+    <title>Şifre Sıfırlama</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
@@ -38,8 +38,8 @@
   <div class="limiter">
     <div class="container-login100" style="background-image: url('images/bg-01.jpg')">
       <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-        <form class="login100-form validate-form" @submit.prevent="sendCode">
-          <span class="login100-form-title p-b-49"> Şifreni mi Unuttun? </span>
+        <form class="login100-form validate-form">
+          <span class="login100-form-title p-b-49"> Şifreyi Sıfırla </span>
 
           <div
             class="wrap-input100 validate-input m-b-23"
@@ -58,10 +58,41 @@
             <span class="focus-input100" data-symbol="&#xf206;"></span>
           </div>
 
+          <div class="wrap-input100 validate-input" data-validate="Kod gereklidir">
+            <span class="label-input100">Kod</span>
+            <input
+              class="input100"
+              type="text"
+              v-model="resetCode"
+              name="resetCode"
+              placeholder="6 haneli kodu yazınız"
+              pattern="^\d{6}$"
+              required
+            />
+            <span class="focus-input100" data-symbol="&#xf190;"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input" data-validate="Yeni şifre gereklidir">
+            <span class="label-input100">Yeni Şifre</span>
+            <input
+              class="input100"
+              type="password"
+              v-model="newPassword"
+              name="newPassword"
+              placeholder="Şifrenizi yazın"
+              required
+            />
+            <span class="focus-input100" data-symbol="&#xf190;"></span>
+          </div>
+
+          <div class="text-right p-t-8 p-b-31"></div>
+
           <div class="container-login100-form-btn">
             <div class="wrap-login100-form-btn">
               <div class="login100-form-bgbtn"></div>
-              <button class="login100-form-btn">Kod Gönder</button>
+              <button class="login100-form-btn" @click.prevent="resetPassword('login')">
+                Şifreyi Sıfırla
+              </button>
             </div>
           </div>
         </form>
@@ -74,21 +105,21 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 const email = ref('')
-const router = useRouter()
+const resetCode = ref('')
+const newPassword = ref('')
 
-const sendCode = async () => {
+const resetPassword = async () => {
   try {
-    const response = await axios.post('http://localhost:3000/auth/forgot-password', {
-      email: email.value
+    const response = await axios.post('http://localhost:3000/auth/reset-password', {
+      email: email.value,
+      resetCode: resetCode.value,
+      newPassword: newPassword.value
     })
 
     alert(response.data.message)
-
-    router.push('/reset-password')
   } catch (error) {
     console.error('Hata:', error)
     alert('Bir hata oluştu. Lütfen tekrar deneyin.')
@@ -96,4 +127,6 @@ const sendCode = async () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Buraya stil kodlarını ekleyebilirsiniz */
+</style>

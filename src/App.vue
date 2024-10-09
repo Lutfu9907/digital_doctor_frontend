@@ -5,6 +5,7 @@
       <RouterLink to="/sign-up"></RouterLink>
       <RouterLink to="/home"></RouterLink>
       <RouterLink to="/forgot-password"></RouterLink>
+      <RouterLink to="/reset-password"></RouterLink>
       <HomePage v-if="isLoggedIn" @loginSuccess="handleLogin" />
       <HomePage v-if="isSignUpIn" @signUpSuccess="handleSignUp" />
     </nav>
