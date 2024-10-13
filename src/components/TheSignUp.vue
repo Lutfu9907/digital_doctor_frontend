@@ -80,14 +80,6 @@
               </button>
             </div>
           </div>
-
-          <div class="txt1 text-center p-t-54 p-b-20">
-            <span> Ya da şununla Kayıt Ol </span>
-          </div>
-
-          <div class="flex-c-m">
-            <a href="#" class="btn btn-danger btn-lg btn-block"> Google ile Kayıt Ol </a>
-          </div>
         </form>
       </div>
     </div>

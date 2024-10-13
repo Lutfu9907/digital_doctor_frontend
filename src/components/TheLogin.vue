@@ -83,24 +83,15 @@
             </div>
           </div>
 
-          <div class="txt1 text-center p-t-54 p-b-20">
-            <span> Ya da şununla Kayıt Ol </span>
+          <div class="text-center p-t-8 p-b-31">
+            <a> Hesabınız yok mu? </a>
           </div>
 
-          <div class="flex-c-m">
-            <a
-              href="#"
-              class="btn btn-danger btn-lg btn-block"
-              @click="handleGoogle('/google-auth')"
-            >
-              Google ile Kayıt Ol
-            </a>
-          </div>
-
-          <div class="flex-col-c p-t-70">
-            <span class="txt1 p-b-17"> Ya da şununla Kayıt Ol </span>
-
-            <a href="#" class="btn btn-dark btn-lg rounded" @click="pushUp('signUp')">Kayıt Ol</a>
+          <div class="container-login100-form-btn">
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button class="login100-form-btn" @click.prevent="pushUp('sign-up')">Kayıt Ol</button>
+            </div>
           </div>
         </form>
       </div>
@@ -128,6 +119,7 @@ const handleLogin = async () => {
     })
 
     localStorage.setItem('authToken', response.data.token)
+
     router.push('/home')
   } catch (error) {
     console.error('Login failed', error)
@@ -142,10 +134,10 @@ const pushUp = () => {
 const handlePassword = () => {
   router.push('/forgot-password')
 }
-
-const handleGoogle = () => {
-  window.location.href = '/google-auth'
-}
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-login100-form-btn {
+  margin-bottom: 15px;
+}
+</style>

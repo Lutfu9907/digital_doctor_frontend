@@ -6,7 +6,8 @@ import ForgotPassword from '@/views/ForgotPassword.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
 
 const isAuthenticated = () => {
-  return !!localStorage.getItem('authToken')
+  const token = localStorage.getItem('authToken')
+  return !!token
 }
 
 const router = createRouter({
@@ -35,12 +36,13 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
+      meta: { requiresAuth: true },
       component: HomePage
     }
   ]
 })
 
-router.beforeEach((to, _, next) => {
+router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated()) {
     next({ name: 'login' })
   } else {

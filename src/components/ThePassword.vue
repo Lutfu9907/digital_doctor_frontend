@@ -38,7 +38,7 @@
   <div class="limiter">
     <div class="container-login100" style="background-image: url('images/bg-01.jpg')">
       <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-        <form class="login100-form validate-form" @submit.prevent="sendCode">
+        <form class="login100-form validate-form">
           <span class="login100-form-title p-b-49"> Şifreni mi Unuttun? </span>
 
           <div
@@ -72,28 +72,6 @@
   <div id="dropDownSelect1"></div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import axios from 'axios'
-
-const email = ref('')
-const router = useRouter()
-
-const sendCode = async () => {
-  try {
-    const response = await axios.post('http://localhost:3000/auth/forgot-password', {
-      email: email.value
-    })
-
-    alert(response.data.message)
-
-    router.push('/reset-password')
-  } catch (error) {
-    console.error('Hata:', error)
-    alert('Bir hata oluştu. Lütfen tekrar deneyin.')
-  }
-}
-</script>
+<script setup></script>
 
 <style scoped></style>

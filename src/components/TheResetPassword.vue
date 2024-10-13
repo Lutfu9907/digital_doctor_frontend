@@ -90,9 +90,7 @@
           <div class="container-login100-form-btn">
             <div class="wrap-login100-form-btn">
               <div class="login100-form-bgbtn"></div>
-              <button class="login100-form-btn" @click.prevent="resetPassword('login')">
-                Şifreyi Sıfırla
-              </button>
+              <button class="login100-form-btn">Şifreyi Sıfırla</button>
             </div>
           </div>
         </form>
@@ -103,29 +101,7 @@
   <div id="dropDownSelect1"></div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-
-const email = ref('')
-const resetCode = ref('')
-const newPassword = ref('')
-
-const resetPassword = async () => {
-  try {
-    const response = await axios.post('http://localhost:3000/auth/reset-password', {
-      email: email.value,
-      resetCode: resetCode.value,
-      newPassword: newPassword.value
-    })
-
-    alert(response.data.message)
-  } catch (error) {
-    console.error('Hata:', error)
-    alert('Bir hata oluştu. Lütfen tekrar deneyin.')
-  }
-}
-</script>
+<script setup></script>
 
 <style scoped>
 /* Buraya stil kodlarını ekleyebilirsiniz */
