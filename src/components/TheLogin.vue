@@ -120,10 +120,58 @@ const handleLogin = async () => {
 
     localStorage.setItem('authToken', response.data.token)
 
+    await fetchUserData()
+
     router.push('/home')
   } catch (error) {
-    console.error('Login failed', error)
-    alert('Giriş başarısız!')
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('authToken')
+      alert('Giriş başarısız!')
+      router.push('/login')
+    } else {
+      console.error('Login failed', error)
+      alert('Giriş başarısız!')
+    }
+  }
+}
+
+const authRequest = async (method, url, data = null) => {
+  const token = localStorage.getItem('authToken')
+
+  if (!token) {
+    alert('Oturum süresi doldu, lütfen tekrar giriş yapın.')
+    router.push('/login')
+    return
+  }
+
+  try {
+    const response = await axios({
+      method: method,
+      url: url,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      data: data
+    })
+
+    return response
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('authToken')
+      alert('Yetkisiz erişim. Lütfen tekrar giriş yapın.')
+      router.push('/login')
+    } else {
+      console.error('Request failed:', error)
+    }
+  }
+}
+
+const fetchUserData = async () => {
+  try {
+    const response = await authRequest('GET', 'http://localhost:3000/auth/authRouter')
+    console.log('Kullanıcı verisi:', response.data)
+  } catch (error) {
+    console.error('Veri çekme hatası:', error)
   }
 }
 
