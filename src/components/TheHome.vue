@@ -36,10 +36,10 @@ const sendMessage = async () => {
 
     messages.value.push({ id: Date.now() + 1, text: response.data, fromUser: false })
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Hata:', error)
     messages.value.push({
       id: Date.now() + 1,
-      text: `Error connecting to server: ${error.message}`,
+      text: `Sunucuya bağlanırken hata oluştu: ${error.message}`,
       fromUser: false
     })
   }
@@ -50,54 +50,52 @@ const sendMessage = async () => {
 
 <style scoped>
 .home-container {
-  padding: 20px;
-  text-align: center;
-}
-
-h1 {
-  color: #007bff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chat-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
   width: 100%;
-  max-width: 1000px; /* Maksimum genişlik */
+  max-width: 1500px;
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
+  background-color: #ffffff;
 }
 
 .messages {
   width: 100%;
-  height: 300px; /* Mesaj alanı yüksekliği */
-  overflow-y: auto; /* Aşırı mesajlar için kaydırma */
+  height: 300px;
+  overflow-y: auto;
   padding: 10px;
   background-color: #f9f9f9;
 }
 
 .message {
-  margin: 5px 0;
-  padding: 10px;
+  margin: 1px 0;
+  padding: 8px;
   border-radius: 5px;
-  max-width: 70%;
+  max-width: 100%;
   word-wrap: break-word;
 }
 
 .user {
-  background-color: #d1e7dd; /* Kullanıcı mesaj rengi */
-  align-self: flex-end; /* Sağ tarafa hizala */
+  background-color: #d1e7dd;
+  align-self: flex-end;
 }
 
 .gpt {
-  background-color: #e2e3e5; /* GPT mesaj rengi */
-  align-self: flex-start; /* Sol tarafa hizala */
+  background-color: #e2e3e5;
+  align-self: flex-start;
 }
 
 .chat-input {
-  width: calc(100% - 100px); /* Genişlik hesaplama */
+  width: calc(100% - 100px);
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -105,7 +103,7 @@ h1 {
 }
 
 .send-button {
-  padding: 10px 15px;
+  padding: 10px 100px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -114,6 +112,6 @@ h1 {
 }
 
 .send-button:hover {
-  background-color: #0056b3; /* Hover rengi */
+  background-color: #0056b3;
 }
 </style>
