@@ -106,7 +106,7 @@ const handleSignUp = async () => {
     })
 
     alert(response.data.message)
-    router.push('/home')
+    router.push('/login')
   } catch (error) {
     console.error('Kayıt başarısız:', error)
     alert('Kayıt başarısız! Lütfen tekrar deneyin.')
