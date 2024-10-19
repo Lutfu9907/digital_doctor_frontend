@@ -4,10 +4,27 @@ import HomePage from '../views/HomePage.vue'
 import SignUp from '@/views/SignUp.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
+import axios from 'axios'
 
-const isAuthenticated = () => {
-  const token = localStorage.getItem('authToken')
-  return !!token
+const isAuthenticatedAxios = async () => {
+  const token = window.localStorage.getItem('authToken')
+
+  try {
+    const res = await axios.get('http://localhost:3000/auth/authRouter', {
+      headers: {
+        Authorization: ` Bearer ${token}`
+      }
+    })
+
+    if (res.data.message !== 'ok') {
+      window.localStorage.clear()
+      router.push({ name: 'login' })
+    }
+  } catch (error) {
+    console.error('Error in authentication:', error)
+    window.localStorage.clear()
+    router.push({ name: 'login' })
+  }
 }
 
 const router = createRouter({
@@ -42,12 +59,11 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !isAuthenticated()) {
-    next({ name: 'login' })
-  } else {
-    next()
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.requiresAuth) {
+    await isAuthenticatedAxios()
   }
+  next()
 })
 
 export default router

@@ -117,12 +117,15 @@ const handleLogin = async () => {
       email: email.value,
       password: password.value
     })
+    console.log('login başarılı', response.data)
 
     localStorage.setItem('authToken', response.data.token)
 
     await fetchUserData()
 
+    console.log('home sayfasına yönlendiriliyor')
     router.push('/home')
+    console.log('yönlendirme başarılı')
   } catch (error) {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('authToken')
