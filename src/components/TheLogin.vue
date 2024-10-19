@@ -123,7 +123,6 @@ const handleLogin = async () => {
 
     await fetchUserData()
 
-    console.log('home sayfasına yönlendiriliyor')
     router.push('/home')
     console.log('yönlendirme başarılı')
   } catch (error) {

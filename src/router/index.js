@@ -12,11 +12,11 @@ const isAuthenticatedAxios = async () => {
   try {
     const res = await axios.get('http://localhost:3000/auth/authRouter', {
       headers: {
-        Authorization: ` Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
 
-    if (res.data.message !== 'ok') {
+    if (!res.data) {
       window.localStorage.clear()
       router.push({ name: 'login' })
     }

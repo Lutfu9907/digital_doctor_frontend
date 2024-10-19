@@ -14,12 +14,16 @@
       />
       <button @click="sendMessage" class="send-button">Send</button>
     </div>
+    <button class="login100-form-btn" @click.prevent="handleLogout('login')">Çıkış Yap</button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
+
+const router = useRouter()
 
 const userMessage = ref('')
 const messages = ref([])
@@ -45,6 +49,18 @@ const sendMessage = async () => {
   }
 
   userMessage.value = ''
+}
+const handleLogout = async () => {
+  try {
+    await axios.post('http://localhost:3000/auth/logout')
+
+    await localStorage.removeItem('authToken')
+    await sessionStorage.removeItem('authToken')
+
+    await router.push('/login')
+  } catch (error) {
+    console.error('Çıkış işlemi sırasında bir hata oluştu:', error)
+  }
 }
 </script>
 
