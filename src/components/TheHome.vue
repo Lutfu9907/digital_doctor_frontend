@@ -12,7 +12,7 @@
         <input
           v-model="userMessage"
           @keyup.enter="sendMessage"
-          placeholder="Mesajını buraya gir..."
+          placeholder="Hangi konuda rahatsızlık yaşıyorsunuz? Detayları yazabilirsiniz."
           class="chat-input"
         />
         <button @click="sendMessage" class="send-button">Gönder</button>
