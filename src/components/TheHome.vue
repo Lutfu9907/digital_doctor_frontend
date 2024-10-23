@@ -7,6 +7,7 @@
             {{ msg.text }}
           </div>
         </div>
+        <div v-if="isLoading" class="message-loader">Yükleniyor...</div>
       </div>
       <div class="input-container">
         <input
@@ -31,15 +32,21 @@ const router = useRouter()
 
 const userMessage = ref('')
 const messages = ref([])
+const isLoading = ref(false)
 
 const sendMessage = async () => {
   if (userMessage.value.trim() === '') return
 
   messages.value.push({ id: Date.now(), text: userMessage.value, fromUser: true })
 
+  const tempMessage = userMessage.value
+  userMessage.value = ''
+
+  isLoading.value = true
+
   try {
     const response = await axios.post('http://localhost:3000/prompt/promptHandler', {
-      message: userMessage.value
+      message: tempMessage
     })
 
     messages.value.push({ id: Date.now() + 1, text: response.data, fromUser: false })
@@ -50,10 +57,11 @@ const sendMessage = async () => {
       text: `Sunucuya bağlanırken hata oluştu: ${error.message}`,
       fromUser: false
     })
+  } finally {
+    isLoading.value = false
   }
-
-  userMessage.value = ''
 }
+
 const handleLogout = async () => {
   try {
     await axios.post('http://localhost:3000/auth/logout')
@@ -110,6 +118,12 @@ const handleLogout = async () => {
   max-width: 80%;
   word-wrap: break-word;
   font-size: 14px;
+}
+.message-loader {
+  text-align: right;
+  font-size: 14px;
+  color: #007bff;
+  margin-top: 10px;
 }
 
 .user {
@@ -168,7 +182,6 @@ const handleLogout = async () => {
   background-color: #c0392b;
 }
 
-/* Scroll styling */
 .messages::-webkit-scrollbar {
   width: 8px;
 }
