@@ -45,9 +45,19 @@ const sendMessage = async () => {
   isLoading.value = true
 
   try {
-    const response = await axios.post('http://localhost:3000/prompt/promptHandler', {
-      message: tempMessage
-    })
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+
+    const response = await axios.post(
+      'http://localhost:3000/prompt/promptHandler',
+      {
+        message: tempMessage
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
 
     messages.value.push({ id: Date.now() + 1, text: response.data, fromUser: false })
   } catch (error) {
