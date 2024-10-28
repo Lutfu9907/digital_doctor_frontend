@@ -3,7 +3,6 @@
     <nav>
       <RouterLink to="/login"></RouterLink>
       <RouterLink to="/sign-up"></RouterLink>
-      <RouterLink to="/modal"></RouterLink>
       <RouterLink to="/home"></RouterLink>
       <RouterLink to="/forgot-password"></RouterLink>
       <RouterLink to="/reset-password"></RouterLink>

@@ -4,7 +4,6 @@ import HomePage from '../views/HomePage.vue'
 import SignUp from '@/views/SignUp.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
-import ModalPage from '@/views/ModalPage.vue'
 import axios from 'axios'
 
 const isAuthenticatedAxios = async () => {
@@ -50,11 +49,6 @@ const router = createRouter({
       path: '/sign-up',
       name: 'sign-up',
       component: SignUp
-    },
-    {
-      path: '/modal',
-      name: 'modal',
-      component: ModalPage
     },
     {
       path: '/home',

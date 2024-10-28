@@ -1,6 +1,7 @@
 <template>
   <div class="home-container">
     <div class="chat-container">
+      <button class="new-chat-button" @click="createNewChat">Yeni Sohbet</button>
       <div class="messages">
         <div v-for="msg in messages" :key="msg.id" class="message-wrapper">
           <div class="message" :class="{ user: msg.fromUser, gpt: !msg.fromUser }">
@@ -72,6 +73,27 @@ const sendMessage = async () => {
   }
 }
 
+const createNewChat = async () => {
+  try {
+    const token = localStorage.getItem('authToken')
+
+    const response = await axios.post('http://localhost:3000/prompt/newChat', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (response.status === 201) {
+      messages.value = []
+      console.log('Yeni sohbet oluşturuldu:', response.data)
+    } else {
+      console.error('Yeni sohbet oluşturulamadı')
+    }
+  } catch (error) {
+    console.error('Yeni sohbet oluşturulurken hata:', error)
+  }
+}
+
 const handleLogout = async () => {
   try {
     await axios.post('http://localhost:3000/auth/logout')
@@ -93,6 +115,21 @@ const handleLogout = async () => {
   justify-content: center;
   align-items: center;
   background-color: #f0f2f5;
+}
+.new-chat-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.new-chat-button:hover {
+  background-color: #218838;
 }
 
 .chat-container {
