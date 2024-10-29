@@ -51,7 +51,8 @@ const sendMessage = async () => {
     const response = await axios.post(
       'http://localhost:3000/prompt/promptHandler',
       {
-        message: tempMessage
+        message: tempMessage,
+        chatId: currentChatId.value
       },
       {
         headers: {
@@ -73,18 +74,26 @@ const sendMessage = async () => {
   }
 }
 
+const currentChatId = ref(null)
+
 const createNewChat = async () => {
   try {
-    const token = localStorage.getItem('authToken')
-
-    const response = await axios.post('http://localhost:3000/prompt/newChat', {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+    const response = await axios.post(
+      'http://localhost:3000/prompt/newChat',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
 
     if (response.status === 201) {
+      currentChatId.value = response.data.chat._id
+
       messages.value = []
+
       console.log('Yeni sohbet oluşturuldu:', response.data)
     } else {
       console.error('Yeni sohbet oluşturulamadı')
