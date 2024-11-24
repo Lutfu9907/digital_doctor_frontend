@@ -19,6 +19,8 @@
         />
         <button @click="sendMessage" class="send-button">Gönder</button>
       </div>
+      <button class="voice-response-button" @click="getVoiceResponse">Sesli Yanıt Al</button>
+      <audio ref="audioPlayer" controls></audio>
     </div>
     <button class="logout-button" @click.prevent="handleLogout('login')">Çıkış Yap</button>
   </div>
@@ -100,6 +102,29 @@ const createNewChat = async () => {
     }
   } catch (error) {
     console.error('Yeni sohbet oluşturulurken hata:', error)
+  }
+}
+
+const getVoiceResponse = async () => {
+  if (userMessage.value.trim() === '') return
+
+  try {
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+    const response = await axios.post(
+      'http://localhost:3000/prompt/promtHandler',
+      { message: userMessage.value },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    const audioPlayer = ref(null)
+    audioPlayer.value.src = response.data.audioUrl
+    audioPlayer.value.play()
+  } catch (error) {
+    console.error('Sesli yanıt alınırken hata oluştu:', error)
   }
 }
 
@@ -222,6 +247,19 @@ const handleLogout = async () => {
 
 .send-button:hover {
   background-color: #0056b3;
+}
+.voice-response-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.voice-response-button:hover {
+  background-color: #218838;
 }
 
 .logout-button {
