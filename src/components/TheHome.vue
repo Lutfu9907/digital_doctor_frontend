@@ -111,7 +111,7 @@ const getVoiceResponse = async () => {
   try {
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
     const response = await axios.post(
-      'http://localhost:3000/prompt/promtHandler',
+      'http://localhost:3000/prompt/ttsHandler',
       { message: userMessage.value },
       {
         headers: {
