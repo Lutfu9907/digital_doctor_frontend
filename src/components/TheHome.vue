@@ -105,6 +105,7 @@ const createNewChat = async () => {
   }
 }
 
+const audioPlayer = ref(null)
 const getVoiceResponse = async () => {
   if (userMessage.value.trim() === '') return
 
@@ -120,9 +121,12 @@ const getVoiceResponse = async () => {
       }
     )
 
-    const audioPlayer = ref(null)
-    audioPlayer.value.src = response.data.audioUrl
-    audioPlayer.value.play()
+    if (response.data.audioUrl) {
+      audioPlayer.value.src = response.data.audioUrl
+      audioPlayer.value.play()
+    } else {
+      console.error('Ses dosyası alınamadı.')
+    }
   } catch (error) {
     console.error('Sesli yanıt alınırken hata oluştu:', error)
   }
