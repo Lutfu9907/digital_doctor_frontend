@@ -122,7 +122,9 @@ const getVoiceResponse = async () => {
     )
 
     if (response.data.audioUrl) {
+      console.log('Ses dosyası URL:', response.data.audioUrl)
       audioPlayer.value.src = response.data.audioUrl
+      audioPlayer.value.load()
       audioPlayer.value.play()
     } else {
       console.error('Ses dosyası alınamadı.')
