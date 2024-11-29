@@ -107,10 +107,16 @@ const createNewChat = async () => {
 
 const audioPlayer = ref(null)
 const getVoiceResponse = async () => {
+  console.log('Sesli yanıt alma isteği yapılıyor...')
+  console.log('Kullanıcı mesajı:', userMessage.value)
+
   if (userMessage.value.trim() === '') return
+  console.log('Kullanıcı mesajı boş, istek yapılmayacak.')
 
   try {
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+    console.log('Token:', token)
+
     const response = await axios.post(
       'http://localhost:3000/prompt/ttsHandler',
       { message: userMessage.value },
@@ -120,11 +126,11 @@ const getVoiceResponse = async () => {
         }
       }
     )
+    console.log('Backend yanıtı:', response.data)
 
     if (response.data.audioUrl) {
       console.log('Ses dosyası URL:', response.data.audioUrl)
       audioPlayer.value.src = response.data.audioUrl
-      audioPlayer.value.load()
       audioPlayer.value.play()
     } else {
       console.error('Ses dosyası alınamadı.')
