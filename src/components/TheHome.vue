@@ -107,9 +107,6 @@ const createNewChat = async () => {
 
 const audioPlayer = ref(null)
 const getVoiceResponse = async () => {
-  console.log('Sesli yanıt alma isteği yapılıyor...')
-  console.log('Kullanıcı mesajı:', userMessage.value)
-
   if (userMessage.value.trim() === '') return
   console.log('Kullanıcı mesajı boş, istek yapılmayacak.')
 
@@ -126,10 +123,10 @@ const getVoiceResponse = async () => {
         }
       }
     )
-    console.log('Backend yanıtı:', response.data)
+
+    console.log('AI yanıtı:', response.data.message)
 
     if (response.data.audioUrl) {
-      console.log('Ses dosyası URL:', response.data.audioUrl)
       audioPlayer.value.src = response.data.audioUrl
       audioPlayer.value.play()
     } else {
