@@ -39,11 +39,12 @@ const isLoading = ref(false)
 
 const sendMessage = async () => {
   if (userMessage.value.trim() === '') return
+  if (isLoading.value) return
 
   messages.value.push({ id: Date.now(), text: userMessage.value, fromUser: true })
 
   const tempMessage = userMessage.value
-  userMessage.value = ''
+  // userMessage.value = ''
 
   isLoading.value = true
 
@@ -105,14 +106,23 @@ const createNewChat = async () => {
   }
 }
 
+const isVoiceLoading = ref(false)
 const audioPlayer = ref(null)
 const getVoiceResponse = async () => {
-  if (userMessage.value.trim() === '') return
-  console.log('Kullanıcı mesajı boş, istek yapılmayacak.')
+  if (userMessage.value.trim() === '') {
+    console.error('Kullanıcı mesajı boş.')
+    return
+  }
+
+  if (isVoiceLoading.value) {
+    console.warn('İstek zaten devam ediyor.')
+    return
+  }
+
+  isVoiceLoading.value = true
 
   try {
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
-    console.log('Token:', token)
 
     const response = await axios.post(
       'http://localhost:3000/prompt/ttsHandler',
@@ -124,6 +134,8 @@ const getVoiceResponse = async () => {
       }
     )
 
+    console.log('Sunucudan gelen yanıt:', response.data)
+    console.log('Audio URL:', response.data.audioUrl)
     console.log('AI yanıtı:', response.data.message)
 
     if (response.data.audioUrl) {
@@ -133,7 +145,12 @@ const getVoiceResponse = async () => {
       console.error('Ses dosyası alınamadı.')
     }
   } catch (error) {
-    console.error('Sesli yanıt alınırken hata oluştu:', error)
+    console.error(
+      'Sesli yanıt alınırken hata oluştu:',
+      error.response ? error.response.data : error.message
+    )
+  } finally {
+    isVoiceLoading.value = false
   }
 }
 
