@@ -41,10 +41,10 @@ const sendMessage = async () => {
   if (userMessage.value.trim() === '') return
   if (isLoading.value) return
 
-  messages.value.push({ id: Date.now(), text: userMessage.value, fromUser: true })
-
   const tempMessage = userMessage.value
-  // userMessage.value = ''
+  userMessage.value = ''
+
+  messages.value.push({ id: Date.now(), text: tempMessage, fromUser: true })
 
   isLoading.value = true
 
@@ -75,6 +75,7 @@ const sendMessage = async () => {
   } finally {
     isLoading.value = false
   }
+  await getVoiceResponse(tempMessage)
 }
 
 const currentChatId = ref(null)
@@ -108,8 +109,8 @@ const createNewChat = async () => {
 
 const isVoiceLoading = ref(false)
 const audioPlayer = ref(null)
-const getVoiceResponse = async () => {
-  if (userMessage.value.trim() === '') {
+const getVoiceResponse = async (message) => {
+  if (!message.trim() === '') {
     console.error('Kullanıcı mesajı boş.')
     return
   }
@@ -126,7 +127,7 @@ const getVoiceResponse = async () => {
 
     const response = await axios.post(
       'http://localhost:3000/prompt/ttsHandler',
-      { message: userMessage.value },
+      { message },
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -135,7 +136,6 @@ const getVoiceResponse = async () => {
     )
 
     console.log('Sunucudan gelen yanıt:', response.data)
-    console.log('Audio URL:', response.data.audioUrl)
     console.log('AI yanıtı:', response.data.message)
 
     if (response.data.audioUrl) {
