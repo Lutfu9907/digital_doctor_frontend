@@ -19,7 +19,6 @@
         />
         <button @click="sendMessage" class="send-button">Gönder</button>
       </div>
-      <button class="voice-response-button" @click="getVoiceResponse">Sesli Yanıt Al</button>
       <audio ref="audioPlayer" controls></audio>
     </div>
     <button class="logout-button" @click.prevent="handleLogout('login')">Çıkış Yap</button>
@@ -65,6 +64,7 @@ const sendMessage = async () => {
     )
 
     messages.value.push({ id: Date.now() + 1, text: response.data, fromUser: false })
+    await getVoiceResponse(response.data)
   } catch (error) {
     console.error('Hata:', error)
     messages.value.push({
@@ -75,7 +75,6 @@ const sendMessage = async () => {
   } finally {
     isLoading.value = false
   }
-  await getVoiceResponse(tempMessage)
 }
 
 const currentChatId = ref(null)
@@ -134,9 +133,6 @@ const getVoiceResponse = async (message) => {
         }
       }
     )
-
-    console.log('Sunucudan gelen yanıt:', response.data)
-    console.log('AI yanıtı:', response.data.message)
 
     if (response.data.audioUrl) {
       audioPlayer.value.src = response.data.audioUrl
