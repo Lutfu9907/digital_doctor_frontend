@@ -1,13 +1,11 @@
 frontend
 
-- (Mailgun,Mailreset,Mailersend)(şifre resetleme).
+- Şifreleme kısmını kaldır
 
-- Ai girişte otomatik mesaj atsın.
+- Sohbetleri leftsidebar da tut.
+
+- Ai girişte otomatik mesaj atsın ve system promptunu güncelle, ai ın maliyetlerini ayarla.
 
 - openai apisi ve tts apisinin özelliklerini geliştir.
 
-- şifre eu standartlarında oluşturulsun hem frontend de hem backend de kontrol et.
-
 - Home sayfası için tasarım oluştur.
-
-- Avatar entegre edilecek.
