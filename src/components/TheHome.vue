@@ -1,5 +1,13 @@
 <template>
   <div class="home-container">
+    <div class="sidebar">
+      <h3>Sohbet Geçmişi</h3>
+      <ul>
+        <li v-for="chat in chatHistory" :key="chat.id" @click="selectChat(chat)">
+          {{ chat.title }}
+        </li>
+      </ul>
+    </div>
     <div class="chat-container">
       <button class="new-chat-button" @click="createNewChat">Yeni Sohbet</button>
       <div class="messages">
@@ -27,14 +35,46 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
 const router = useRouter()
 
 const userMessage = ref('')
 const messages = ref([])
 const isLoading = ref(false)
+const chatHistory = ref([])
+
+const getChatHistory = async () => {
+  try {
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+    const response = await axios.get('http://localhost:3000/prompt/chatDatabase', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    chatHistory.value = response.data.chats
+  } catch (error) {
+    console.error('Sohbet geçmişi alınırken hata oluştu:', error)
+  }
+}
+
+const selectChat = (chat) => {
+  currentChatId.value = chat.id
+  messages.value = []
+  getMessagesForChat(chat.id)
+}
+
+const getMessagesForChat = async (chatId) => {
+  try {
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+    const response = await axios.get(`http://localhost:3000/chat/${chatId}/messages`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    messages.value = response.data.messages
+  } catch (error) {
+    console.error('Mesajlar alınırken hata oluştu:', error)
+  }
+}
 
 const sendMessage = async () => {
   if (userMessage.value.trim() === '') return
@@ -162,6 +202,10 @@ const handleLogout = async () => {
     console.error('Çıkış işlemi sırasında bir hata oluştu:', error)
   }
 }
+
+onMounted(() => {
+  getChatHistory()
+})
 </script>
 
 <style scoped>
@@ -171,6 +215,35 @@ const handleLogout = async () => {
   justify-content: center;
   align-items: center;
   background-color: #f0f2f5;
+}
+
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-right: 2px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.sidebar li:hover {
+  color: #007bff;
 }
 .new-chat-button {
   position: absolute;
@@ -187,7 +260,6 @@ const handleLogout = async () => {
 .new-chat-button:hover {
   background-color: #218838;
 }
-
 .chat-container {
   display: flex;
   flex-direction: column;
