@@ -1,8 +1,8 @@
 frontend
 
-- Ai girişte otomatik mesaj atsın ve system promptunu güncelle, ai ın maliyetlerini ayarla.
+- const response = await axios.get `http://localhost:3000/prompt/${chatId}/messages
+  bu satır backend ile olan ilişkide patlıyor
 
-- mesaj sidebar olarak eklendi ve veritabanından mesajlar çekiliyor ancak mesajlar frontende görünmüyor
-  bunu düzelteceksin.
+- Ai girişte otomatik mesaj atsın ve system promptunu güncelle, ai ın maliyetlerini ayarla.
 
 - Home sayfası için tasarım oluştur.

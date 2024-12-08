@@ -53,12 +53,14 @@ const getChatHistory = async () => {
       headers: { Authorization: `Bearer ${token}` }
     })
     chatHistory.value = response.data.chats
+    console.log('sohbet burada işte', response.data.chats)
   } catch (error) {
     console.error('Sohbet geçmişi alınırken hata oluştu:', error)
   }
 }
 
 const selectChat = (chat) => {
+  console.log('Chat ID:', chat.id)
   currentChatId.value = chat.id
   messages.value = []
   getMessagesForChat(chat.id)
@@ -67,9 +69,12 @@ const selectChat = (chat) => {
 const getMessagesForChat = async (chatId) => {
   try {
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
-    const response = await axios.get(`http://localhost:3000/chat/${chatId}/messages`, {
+    console.log('Chat ID gönderiliyor:', chatId)
+
+    const response = await axios.get(`http://localhost:3000/prompt/${chatId}/chatDatabase`, {
       headers: { Authorization: `Bearer ${token}` }
     })
+    console.log('Mesajlar alındı:', response.data)
     messages.value = response.data.messages
   } catch (error) {
     console.error('Mesajlar alınırken hata oluştu:', error)
