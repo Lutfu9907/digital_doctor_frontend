@@ -1,15 +1,15 @@
 <template>
   <div class="home-container">
     <div class="sidebar">
+      <button class="new-chat-button" @click="createNewChat">+ Yeni Sohbet</button>
       <h3>Sohbet Geçmişi</h3>
       <ul>
-        <li v-for="chat in chatHistory" :key="chat.id" @click="selectChat(chat)">
+        <li v-for="chat in chatHistory" :key="chat.id" @click="selectChat(chat)" class="chat-item">
           {{ chat.title }}
         </li>
       </ul>
     </div>
     <div class="chat-container">
-      <button class="new-chat-button" @click="createNewChat">Yeni Sohbet</button>
       <div class="messages">
         <div v-for="msg in messages" :key="msg.id" class="message-wrapper">
           <div class="message" :class="{ user: msg.fromUser, gpt: !msg.fromUser }">
@@ -218,64 +218,77 @@ onMounted(() => {
 .home-container {
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #f0f2f5;
 }
 
 .sidebar {
-  width: 250px;
+  width: 300px;
   padding: 20px;
-  background-color: #f1f1f1;
-  border-right: 2px solid #ddd;
+  background-color: #202123;
+  color: white;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  border-right: 2px solid #333;
+  overflow-y: auto;
+}
+
+.new-chat-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #2d2f36;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.new-chat-button:hover {
+  background-color: #3b3e45;
 }
 
 .sidebar h3 {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #aaa;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.sidebar li {
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-
-.sidebar li:hover {
-  color: #007bff;
-}
-.new-chat-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 8px 16px;
-  background-color: #28a745;
-  color: white;
-  border: none;
+.chat-item {
+  padding: 10px;
   border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #2d2f36;
   cursor: pointer;
+  color: white;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.new-chat-button:hover {
-  background-color: #218838;
+.chat-item:hover {
+  background-color: #3b3e45;
 }
+
 .chat-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 600px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
   background-color: #ffffff;
+  border-radius: 8px;
+  margin: 20px;
+  overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -300,6 +313,7 @@ onMounted(() => {
   word-wrap: break-word;
   font-size: 14px;
 }
+
 .message-loader {
   text-align: right;
   font-size: 14px;
@@ -348,22 +362,11 @@ onMounted(() => {
 .send-button:hover {
   background-color: #0056b3;
 }
-.voice-response-button {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.voice-response-button:hover {
-  background-color: #218838;
-}
 
 .logout-button {
-  margin-top: 20px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
   padding: 10px 20px;
   background-color: #ff4b5c;
   color: white;
