@@ -1,7 +1,9 @@
 <template>
   <div class="home-container">
     <div class="sidebar">
-      <button class="new-chat-button" @click="createNewChat">+ Yeni Sohbet</button>
+      <button class="new-chat-button" @click="createNewChat" :disabled="isCreatingChat">
+        {{ isCreatingChat ? 'Yükleniyor...' : '+ Yeni Sohbet' }}
+      </button>
       <h3>Sohbet Geçmişi</h3>
       <ul>
         <li v-for="chat in chatHistory" :key="chat.id" @click="selectChat(chat)" class="chat-item">
@@ -45,6 +47,7 @@ const userMessage = ref('')
 const messages = ref([])
 const isLoading = ref(false)
 const chatHistory = ref([])
+const isCreatingChat = ref(false)
 
 const getChatHistory = async () => {
   try {
@@ -126,6 +129,10 @@ const sendMessage = async () => {
 const currentChatId = ref(null)
 
 const createNewChat = async () => {
+  if (isCreatingChat.value) return
+
+  isCreatingChat.value = true
+
   try {
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
     const response = await axios.post(
@@ -149,6 +156,10 @@ const createNewChat = async () => {
     }
   } catch (error) {
     console.error('Yeni sohbet oluşturulurken hata:', error)
+  } finally {
+    setTimeout(() => {
+      isCreatingChat.value = false
+    }, 2000)
   }
 }
 
@@ -218,149 +229,154 @@ onMounted(() => {
 .home-container {
   height: 100vh;
   display: flex;
-  background-color: #f0f2f5;
+  background-color: #f4f7f6;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .sidebar {
   width: 300px;
   padding: 20px;
-  background-color: #202123;
+  background-color: #2c8fad;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  border-right: 2px solid #333;
+  border-right: 2px solid #1f6e8c;
   overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .new-chat-button {
   width: 100%;
-  padding: 10px;
-  background-color: #2d2f36;
+  padding: 12px;
+  background-color: #1f6e8c;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  text-align: left;
   margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
 }
 
 .new-chat-button:hover {
-  background-color: #3b3e45;
+  background-color: #1a5f7a;
 }
 
-.sidebar h3 {
-  font-size: 16px;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #aaa;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.new-chat-button:disabled {
+  background-color: #a0c4d4;
+  cursor: not-allowed;
 }
 
 .chat-item {
-  padding: 10px;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 6px;
   margin-bottom: 10px;
-  background-color: #2d2f36;
+  background-color: #4da6c4;
   cursor: pointer;
   color: white;
   font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: background-color 0.3s ease;
 }
 
 .chat-item:hover {
-  background-color: #3b3e45;
+  background-color: #3b8bb5;
 }
 
 .chat-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 10px;
   margin: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .messages {
   width: 100%;
-  height: 400px;
+  flex: 1;
   overflow-y: auto;
-  padding: 15px;
-  background-color: #f9f9f9;
+  padding: 20px;
+  background-color: #f0f4f7;
 }
 
 .message-wrapper {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 
 .message {
-  padding: 8px 12px;
+  padding: 10px 15px;
   border-radius: 12px;
   max-width: 80%;
   word-wrap: break-word;
   font-size: 14px;
+  line-height: 1.6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .message-loader {
   text-align: right;
   font-size: 14px;
-  color: #007bff;
+  color: #2c8fad;
   margin-top: 10px;
+  font-style: italic;
 }
 
 .user {
-  background-color: #d1e7dd;
-  align-self: flex-end;
+  background-color: #e6f2f7;
+  color: #1f6e8c;
+  margin-left: auto;
 }
 
 .gpt {
-  background-color: #e2e3e5;
-  align-self: flex-start;
-}
-
-.chat-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  margin-right: 10px;
-  font-size: 14px;
-  outline: none;
+  background-color: #f0f4f7;
+  color: #2c8fad;
+  margin-right: auto;
 }
 
 .input-container {
   display: flex;
   width: 100%;
-  padding: 10px;
-  background-color: #f1f1f1;
-  border-top: 1px solid #ccc;
+  padding: 15px;
+  background-color: #f4f7f6;
+  border-top: 1px solid #e0e0e0;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #b0c4de;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.chat-input:focus {
+  border-color: #2c8fad;
+  box-shadow: 0 0 0 2px rgba(44, 143, 173, 0.2);
 }
 
 .send-button {
-  padding: 10px 20px;
-  background-color: #007bff;
+  padding: 12px 20px;
+  background-color: #2c8fad;
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 6px;
   cursor: pointer;
   margin-left: 10px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
 }
 
 .send-button:hover {
-  background-color: #0056b3;
+  background-color: #1f6e8c;
 }
 
 .logout-button {
@@ -368,11 +384,12 @@ onMounted(() => {
   bottom: 20px;
   left: 20px;
   padding: 10px 20px;
-  background-color: #ff4b5c;
+  background-color: #e74c3c;
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .logout-button:hover {
@@ -383,12 +400,12 @@ onMounted(() => {
   width: 8px;
 }
 
-.messages::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 4px;
+.messages::-webkit-scrollbar-track {
+  background: #f0f4f7;
 }
 
-.messages::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+.messages::-webkit-scrollbar-thumb {
+  background-color: #2c8fad;
+  border-radius: 4px;
 }
 </style>
