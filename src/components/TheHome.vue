@@ -29,7 +29,7 @@
         />
         <button @click="sendMessage" class="send-button">Gönder</button>
       </div>
-      <audio ref="audioPlayer" controls></audio>
+      <audio ref="audioPlayer" controls class="audio-player"></audio>
     </div>
     <button class="logout-button" @click.prevent="handleLogout('login')">Çıkış Yap</button>
   </div>
@@ -245,9 +245,14 @@ onMounted(() => {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.sidebar h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
 .new-chat-button {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background-color: #1f6e8c;
   color: white;
   border: none;
@@ -256,6 +261,8 @@ onMounted(() => {
   margin-bottom: 20px;
   transition: background-color 0.3s ease;
   font-weight: 600;
+  font-size: 16px;
+  animation: buttonAnimation 0.4s ease-out;
 }
 
 .new-chat-button:hover {
@@ -268,13 +275,13 @@ onMounted(() => {
 }
 
 .chat-item {
-  padding: 12px;
+  padding: 14px;
   border-radius: 6px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   background-color: #4da6c4;
   cursor: pointer;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -285,6 +292,15 @@ onMounted(() => {
   background-color: #3b8bb5;
 }
 
+.audio-player {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130%;
+  max-width: 700px;
+}
+
 .chat-container {
   flex: 1;
   display: flex;
@@ -293,6 +309,7 @@ onMounted(() => {
   background-color: #ffffff;
   border-radius: 10px;
   margin: 20px;
+  padding-bottom: 53px;
   overflow: hidden;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
@@ -307,22 +324,22 @@ onMounted(() => {
 
 .message-wrapper {
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 }
 
 .message {
-  padding: 10px 15px;
+  padding: 12px 18px;
   border-radius: 12px;
   max-width: 80%;
   word-wrap: break-word;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .message-loader {
   text-align: right;
-  font-size: 14px;
+  font-size: 16px;
   color: #2c8fad;
   margin-top: 10px;
   font-style: italic;
@@ -350,10 +367,10 @@ onMounted(() => {
 
 .chat-input {
   flex: 1;
-  padding: 12px;
+  padding: 14px;
   border: 1px solid #b0c4de;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: border-color 0.3s ease;
 }
@@ -364,7 +381,7 @@ onMounted(() => {
 }
 
 .send-button {
-  padding: 12px 20px;
+  padding: 14px 20px;
   background-color: #2c8fad;
   color: white;
   border: none;
@@ -372,7 +389,9 @@ onMounted(() => {
   cursor: pointer;
   margin-left: 10px;
   font-weight: 600;
+  font-size: 16px;
   transition: background-color 0.3s ease;
+  animation: buttonAnimation 0.4s ease-out;
 }
 
 .send-button:hover {
@@ -383,13 +402,15 @@ onMounted(() => {
   position: absolute;
   bottom: 20px;
   left: 20px;
-  padding: 10px 20px;
+  width: 250px;
+  padding: 12px 20px;
   background-color: #e74c3c;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 18px;
 }
 
 .logout-button:hover {
@@ -407,5 +428,17 @@ onMounted(() => {
 .messages::-webkit-scrollbar-thumb {
   background-color: #2c8fad;
   border-radius: 4px;
+}
+
+@keyframes buttonAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
